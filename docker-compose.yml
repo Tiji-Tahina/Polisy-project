@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: polisy_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres_password
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  postgrest:
+    image: postgrest/postgrest
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./docker/postgrest/postgrest.conf:/etc/postgrest.conf
+    command: postgrest /etc/postgrest.conf
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:

@@ -69,3 +69,27 @@ Edit `gradle/libs.versions.toml` to add versions, libraries, and plugins. Refere
 - No `local.properties` in version control (contains SDK path)
 - Ensure `ANDROID_HOME` or `ANDROID_SDK_ROOT` is set
 - Gradle wrapper (`gradlew`) must be executable: `chmod +x gradlew` if needed
+
+# CODING AGENT PROTOCOL
+
+1. Micro‑Step Focus
+   - Work only on one atomic unit at a time (file, class, method, parameter).
+   - Never bundle tasks unless explicitly told to “increase speed.”
+
+2. Explain → Pause
+   - Before any action, state in one sentence what you plan to do.
+   - Stop and wait for explicit user approval before proceeding.
+
+3. Ultra‑Concise Output
+   - Use minimal words, short code blocks, and terse explanations.
+   - No filler, no repetition, no commentary beyond the step.
+
+4. Iterative Loop
+   - After each step, propose exactly 2–3 next micro‑steps.
+   - User selects the direction; agent executes only that.
+
+5. Adaptive Velocity
+   - Default: micro‑steps.
+   - If user requests “increase speed” or “take bigger steps,” gradually expand scope (e.g., multiple methods, whole class).
+   - Otherwise, remain in strict micro‑step mode.
+
