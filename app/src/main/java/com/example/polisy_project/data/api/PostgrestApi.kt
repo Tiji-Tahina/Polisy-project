@@ -2,6 +2,8 @@ package com.example.polisy_project.data.api
 
 import com.example.polisy_project.data.model.Driver
 import com.example.polisy_project.data.model.Infraction
+import com.example.polisy_project.data.model.LoginRequest
+import com.example.polisy_project.data.model.LoginResponse
 import com.example.polisy_project.data.model.Vehicle
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -10,8 +12,18 @@ import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface PostgrestApi {
+
+    @POST("rpc/login")
+    suspend fun login(@Body request: LoginRequest): LoginResponse
+
+    @GET("drivers")
+    suspend fun searchDriversByLicense(
+        @Query("license_number") license: String,
+        @Header("Prefer") prefer: String = "return=representation"
+    ): List<Driver>
 
     @GET("drivers")
     suspend fun getDrivers(): List<Driver>
@@ -24,6 +36,12 @@ interface PostgrestApi {
 
     @GET("drivers/{id}")
     suspend fun getDriverById(@Path("id") id: Int): Driver
+
+    @GET("vehicles")
+    suspend fun searchVehiclesByPlate(
+        @Query("plate_number") plate: String,
+        @Header("Prefer") prefer: String = "return=representation"
+    ): List<Vehicle>
 
     @GET("vehicles")
     suspend fun getVehicles(): List<Vehicle>
@@ -39,6 +57,12 @@ interface PostgrestApi {
 
     @GET("infractions")
     suspend fun getInfractions(): List<Infraction>
+
+    @GET("infractions")
+    suspend fun getInfractionsByDriver(@Query("driver_id") driverId: Int): List<Infraction>
+
+    @GET("infractions")
+    suspend fun getInfractionsByVehicle(@Query("vehicle_id") vehicleId: Int): List<Infraction>
 
     @POST("infractions")
     suspend fun insertInfraction(@Body infraction: Infraction)

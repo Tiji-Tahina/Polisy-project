@@ -1,5 +1,6 @@
 package com.example.polisy_project.data.api
 
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -9,7 +10,17 @@ object RetrofitInstance {
 
     private const val BASE_URL = "http://10.0.2.2:3000/"
 
+    var authToken: String? = null
+
+    private val authInterceptor = Interceptor { chain ->
+        val request = chain.request().newBuilder().apply {
+            authToken?.let { addHeader("Authorization", "Bearer $it") }
+        }.build()
+        chain.proceed(request)
+    }
+
     private val client = OkHttpClient.Builder()
+        .addInterceptor(authInterceptor)
         .addInterceptor(HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         })
